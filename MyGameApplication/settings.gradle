@@ -1,0 +1,3 @@
+include ':app'
+rootProject.name = "MyGameApplication"
+include ':OpenCV 4.4.0'
