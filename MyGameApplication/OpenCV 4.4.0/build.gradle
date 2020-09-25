@@ -4,6 +4,10 @@ android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
 
+    defaultConfig {
+        minSdkVersion 23
+        targetSdkVersion 30
+    }
 
     buildTypes {
         release {
