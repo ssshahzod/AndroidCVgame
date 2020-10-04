@@ -36,7 +36,7 @@ import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCA
 
 public class MainActivity extends AppCompatActivity {
     public String side;
-    public int blink;
+    public int blinks, blink;
 
     private static final String TAG = "MainActivity";
     ImageView imageView;
@@ -97,8 +97,12 @@ public class MainActivity extends AppCompatActivity {
             }
             else {
 
-                blink = blink + 1;
-                showStatus(" Eyes closed "+String.valueOf(blink)+" milliseconds");
+                blinks = blinks + 1;
+                if (blinks > 10){
+                    blink += 1;
+                    blinks = 0;
+                }
+                showStatus(" Eyes closed "+String.valueOf(blink));
             }
         }
 
@@ -153,40 +157,6 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
-/*    @Override
-    protected void onResume() {
-        super.onResume();
-        if (cameraSource != null) {
-            try {
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return;
-                }
-                cameraSource.start();
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (cameraSource!=null) {
-            cameraSource.stop();
-        }
-        //if (videoView.isPlaying()) {
-
-    }*/
-
     public void showStatus(final String message) {
         runOnUiThread(new Runnable() {
             @Override
@@ -195,12 +165,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-/*    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (cameraSource!=null) {
-            cameraSource.release();
-        }
-    } */
 }
