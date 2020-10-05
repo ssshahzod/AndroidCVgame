@@ -44,7 +44,7 @@ public class FullscreenActivity extends AppCompatActivity {
                 }
             }
 
-        }
+        });
     }
 
 

@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Eyeboy</string>
     <string name="start">Начать игру</string>
+    <string name="menu">Меню</string>
 </resources>
