@@ -10,6 +10,9 @@
         android:id="@+id/imageView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:foreground="@drawable/mainbackground"
+        android:src="@drawable/mainbackground"
+        android:visibility="visible"
         app:srcCompat="@drawable/mainbackground" />
 
     <Button
@@ -22,5 +25,70 @@
         android:layout_marginRight="-2dp"
         android:background="@drawable/exitbutton"
         android:text="@string/menu" />
+
+
+    <ImageView
+        android:id="@+id/bottomleftenemy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="14dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginTop="88dp"
+        android:layout_marginEnd="410dp"
+        android:layout_marginRight="410dp"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/mainenemymodelleft" />
+
+    <ImageView
+        android:id="@+id/bottomrightenemy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="231dp"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/mainenemymodelright" />
+
+    <ImageView
+        android:id="@+id/imageViewfront"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srcCompat="@drawable/mainbackgroundfront"
+        tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/hp1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:srcCompat="@drawable/hp" />
+
+    <ImageView
+        android:id="@+id/hp2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
+        android:layout_marginLeft="1dp"
+        android:layout_toEndOf="@+id/hp1"
+        android:layout_toRightOf="@+id/hp1"
+        android:visibility="visible"
+        app:srcCompat="@drawable/hp" />
+
+    <ImageView
+        android:id="@+id/hp3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
+        android:layout_marginLeft="1dp"
+        android:layout_toEndOf="@+id/hp2"
+        android:layout_toRightOf="@+id/hp2"
+        android:visibility="visible"
+        app:srcCompat="@drawable/hp" />
 
 </RelativeLayout>

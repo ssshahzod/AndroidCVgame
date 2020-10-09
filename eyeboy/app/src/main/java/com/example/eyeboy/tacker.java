@@ -4,11 +4,13 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.Image;
+import android.nfc.Tag;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.appcompat.widget.AppCompatEditText;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -16,7 +18,6 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.vision.CameraSource;
@@ -29,25 +30,35 @@ import com.google.android.gms.vision.face.FaceDetector;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
+
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
 
 
 public class tacker extends AppCompatActivity {
-    public int side;
-    public int eyeclosed;
-    public int blinks, blink, coord;
+
+
+    public int side, aim, eyeclosed, enemynumber = 0;
+    public String position;
+    public int blinks, blink, coord, hp = 4;
+    ImageView leftbottom, rightbottom;
+    public String nhp = "hp";
 
     private static final String TAG = "tracker";
-
-
     //For looking logs
     ArrayAdapter adapter;
     ArrayList<String> list = new ArrayList<>();
 
     CameraSource cameraSource;
-
+    private Handler handler;
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
+
+
 
         super.onCreate(savedInstanceState);
 
@@ -55,11 +66,14 @@ public class tacker extends AppCompatActivity {
         Window w = getWindow();
         w.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+
+
+
+
         Button exitbtn = (Button)findViewById(R.id.exitbtn);
         exitbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //exit btn, back to menu
 
                 try{
                     Intent intent = new Intent(tacker.this, FullscreenActivity.class);
@@ -70,6 +84,9 @@ public class tacker extends AppCompatActivity {
             }
         });
 
+
+
+
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 1);
             Toast.makeText(this, "Grant Permission and restart app", Toast.LENGTH_SHORT).show();
@@ -79,6 +96,38 @@ public class tacker extends AppCompatActivity {
 
             adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
             createCameraSource();
+        }
+
+        handler = new Handler() {
+            @Override
+            public void
+        };
+        leftbottom = (ImageView) findViewById(R.id.bottomleftenemy);
+        rightbottom = (ImageView) findViewById(R.id.bottomrightenemy);
+
+
+    }
+
+    public void setenemy() {
+
+    leftbottom = (ImageView) findViewById(R.id.bottomleftenemy);
+    rightbottom = (ImageView) findViewById(R.id.bottomrightenemy);
+        //Log.i(TAG, "in setenemy");
+        if (enemynumber == 0) {
+            Random r = new Random();
+            int i1 = r.nextInt(3 - 1) + 1;
+            if (i1 == 1) {
+                leftbottom.setVisibility(VISIBLE);
+                aim = 1;
+                Log.i(TAG, "visibility set");
+                enemynumber = 1;
+            }
+            if (i1 == 2) {
+                rightbottom.setVisibility(VISIBLE);
+                aim = 0;
+                enemynumber = 1;
+            }
+
         }
     }
 
@@ -94,8 +143,11 @@ public class tacker extends AppCompatActivity {
 
         @Override
         public void onUpdate(Detector.Detections<Face> detections, Face face) {
+
+            setenemy();
             if (face.getIsLeftEyeOpenProbability() > THRESHOLD || face.getIsRightEyeOpenProbability() > THRESHOLD) {
                 //Log.i(TAG, "onUpdate: Eyes Detected");
+
                 blinks = 0;
                 coord = (int) face.getEulerY();
                 if (coord > 14) {
@@ -103,26 +155,33 @@ public class tacker extends AppCompatActivity {
                 } else{
                     side = 0;
                 }
+
             }
             if ((face.getIsLeftEyeOpenProbability() > THRESHOLD || face.getIsRightEyeOpenProbability() > THRESHOLD) && eyeclosed == 1) {
 
-                //Log.i(TAG, "eyeclosed:"+ String.valueOf(eyeclosed));
-                //Log.i(TAG, "side:"+ String.valueOf(side));
-                //Log.i(TAG, "blinks:"+ String.valueOf(blinks));
-                if (side == 1 && blink == 1) {
-                    Log.i(TAG, " Left shot! ");
+
+                if (side == 1 && blink == 1) { //left shot
+                    Log.i(TAG, "Left shot");
+                    if(aim == 1){
+                       leftbottom.setVisibility(INVISIBLE);
+                       enemynumber = 0;
+                    }
                     blink = 0;
                     eyeclosed = 0;
 
                 }
-                if (side == 0 && blink == 1){
-                    Log.i(TAG, " Right Shot! ");
+                if (side == 0 && blink == 1){  //right shot
+                    if(aim == 0){
+                        rightbottom.setVisibility(INVISIBLE);
+                        enemynumber = 0;
+
+
+                    }
                     blink = 0;
                     eyeclosed = 0;
                 }
             }
             if (!(face.getIsLeftEyeOpenProbability() > THRESHOLD || face.getIsRightEyeOpenProbability() > THRESHOLD) && eyeclosed == 0) {
-                //Log.i(TAG, "eyeclosed:"+ String.valueOf(eyeclosed));
                 blinks = blinks + 1;
                 if (blinks > 8) {
                     blink += 1;
@@ -132,6 +191,8 @@ public class tacker extends AppCompatActivity {
                 }
 
             }
+
+
         }
 
 
@@ -141,6 +202,9 @@ public class tacker extends AppCompatActivity {
             super.onDone();
         }
     }
+
+
+
 
     private class FaceTrackerFactory implements MultiProcessor.Factory<Face> {
 
