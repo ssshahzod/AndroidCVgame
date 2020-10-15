@@ -28,30 +28,56 @@
 
 
     <ImageView
-        android:id="@+id/bottomleftenemy"
+        android:id="@+id/thirdpos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="14dp"
-        android:layout_marginLeft="14dp"
-        android:layout_marginTop="88dp"
+        android:layout_marginStart="-41dp"
+        android:layout_marginLeft="-41dp"
+        android:layout_marginTop="106dp"
         android:layout_marginEnd="410dp"
         android:layout_marginRight="410dp"
         android:visibility="invisible"
         app:srcCompat="@drawable/mainenemymodelleft" />
 
     <ImageView
-        android:id="@+id/bottomrightenemy"
+        android:id="@+id/firstpos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="231dp"
+        android:layout_marginEnd="130dp"
+        android:layout_marginRight="130dp"
+        android:layout_marginBottom="102dp"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/mainenemymodelright" />
+
+    <ImageView
+        android:id="@+id/secpos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="395dp"
+        android:layout_marginRight="395dp"
+        android:layout_marginBottom="100dp"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/mainenemymodelright" />
+
+    <ImageView
+        android:id="@+id/zeropos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="23dp"
+        android:layout_marginRight="23dp"
+        android:layout_marginBottom="205dp"
         android:visibility="invisible"
         app:srcCompat="@drawable/mainenemymodelright" />
 

@@ -4,8 +4,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.media.Image;
-import android.nfc.Tag;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -41,8 +39,10 @@ public class tacker extends AppCompatActivity {
 
     public int side, aim, eyeclosed, enemynumber = 0;
     public String position;
-    public int blinks, blink, coord, hp = 4;
-    ImageView leftbottom, rightbottom;
+    float coordy;
+    public int blinks, blink, hp = 3;
+    ImageView thirdpos, zeropos, firstpos, secpos;
+    ImageView hp1, hp2, hp3;
     public String nhp = "hp";
 
     private static final String TAG = "tracker";
@@ -51,7 +51,7 @@ public class tacker extends AppCompatActivity {
     ArrayList<String> list = new ArrayList<>();
 
     CameraSource cameraSource;
-    private Handler handler;
+    public Handler handler;
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,40 +98,67 @@ public class tacker extends AppCompatActivity {
             createCameraSource();
         }
 
-        handler = new Handler() {
-            @Override
-            public void
-        };
-        leftbottom = (ImageView) findViewById(R.id.bottomleftenemy);
-        rightbottom = (ImageView) findViewById(R.id.bottomrightenemy);
+        //visible layouts
+        thirdpos = (ImageView) findViewById(R.id.thirdpos);
+        zeropos = (ImageView) findViewById(R.id.zeropos);
+        firstpos = (ImageView) findViewById(R.id.firstpos);
+        secpos = (ImageView) findViewById(R.id.secpos);
+        hp3 = (ImageView) findViewById(R.id.hp3);
+        hp2 = (ImageView) findViewById(R.id.hp2);
+        hp1 = (ImageView) findViewById(R.id.hp1);
+
 
 
     }
+
+
+
 
     public void setenemy() {
+        new Thread(new Runnable() {
+            public void run() {
+                thirdpos.post(new Runnable() {
+                    public void run() {
+                        if (enemynumber == 0) {
+                            Random r = new Random();
+                            int i1 = r.nextInt(4);
+                            Log.i(TAG, "number" + i1);
+                            aim = i1;
+                            if (i1 == 3) { //left enemy
+                                thirdpos.setVisibility(VISIBLE);
+                                enemynumber = 1;
+                            }
+                            if (i1 == 0) { //right enemy
+                                zeropos.setVisibility(VISIBLE);
+                                enemynumber = 1;
+                            }
 
-    leftbottom = (ImageView) findViewById(R.id.bottomleftenemy);
-    rightbottom = (ImageView) findViewById(R.id.bottomrightenemy);
-        //Log.i(TAG, "in setenemy");
-        if (enemynumber == 0) {
-            Random r = new Random();
-            int i1 = r.nextInt(3 - 1) + 1;
-            if (i1 == 1) {
-                leftbottom.setVisibility(VISIBLE);
-                aim = 1;
-                Log.i(TAG, "visibility set");
-                enemynumber = 1;
-            }
-            if (i1 == 2) {
-                rightbottom.setVisibility(VISIBLE);
-                aim = 0;
-                enemynumber = 1;
-            }
+                            if (i1 == 1) { //middle left
+                                firstpos.setVisibility(VISIBLE);
+                                enemynumber = 1;
+                            }
 
-        }
+                            if (i1 == 2) { //middle right
+                                secpos.setVisibility(VISIBLE);
+                                enemynumber = 1;
+                            }
+
+                            if(hp == 2) {
+                                hp3.setVisibility(INVISIBLE);
+                            }
+                            if(hp == 1){
+                                hp2.setVisibility(INVISIBLE);
+                            }
+                            if (hp == 0){
+                                hp1.setVisibility(INVISIBLE);
+                                setContentView(R.layout.activity_fullscreen);
+                            }
+                        }
+                    }
+                });
+            }
+        }).start();
     }
-
-
     //This class will use google vision api to detect eyes
     private class EyesTracker extends Tracker<Face> {
 
@@ -144,45 +171,84 @@ public class tacker extends AppCompatActivity {
         @Override
         public void onUpdate(Detector.Detections<Face> detections, Face face) {
 
-            setenemy();
+
+            if (enemynumber == 0) {
+                setenemy();
+            } else {
+                Log.i(TAG, "have enemy");
+            }
             if (face.getIsLeftEyeOpenProbability() > THRESHOLD || face.getIsRightEyeOpenProbability() > THRESHOLD) {
-                //Log.i(TAG, "onUpdate: Eyes Detected");
 
                 blinks = 0;
-                coord = (int) face.getEulerY();
-                if (coord > 14) {
-                    side = 1;
-                } else{
-                    side = 0;
+                coordy = face.getEulerY();
+                if(coordy > 21){
+                    side = 3; //left
+                } else if(21 > coordy && coordy > 14){
+                    side = 2; //middle left
+                } else if(14 > coordy && coordy > 7){
+                    side = 1; //middle right
+                } else if(7 > coordy){
+                    side = 0; //right
                 }
-
             }
             if ((face.getIsLeftEyeOpenProbability() > THRESHOLD || face.getIsRightEyeOpenProbability() > THRESHOLD) && eyeclosed == 1) {
+             //choosing sides of shooting
 
-
-                if (side == 1 && blink == 1) { //left shot
-                    Log.i(TAG, "Left shot");
-                    if(aim == 1){
-                       leftbottom.setVisibility(INVISIBLE);
-                       enemynumber = 0;
-                    }
-                    blink = 0;
-                    eyeclosed = 0;
-
-                }
-                if (side == 0 && blink == 1){  //right shot
-                    if(aim == 0){
-                        rightbottom.setVisibility(INVISIBLE);
+                if (side == 3 && blink == 1) { //left shot
+                    if(aim == side){
+                        thirdpos.setVisibility(INVISIBLE);
                         enemynumber = 0;
-
-
                     }
                     blink = 0;
                     eyeclosed = 0;
+                }
+
+
+
+                if (side == 0 && blink == 1){  //right shot
+                    if(aim == side){
+                        zeropos.setVisibility(INVISIBLE);
+                        enemynumber = 0;
+                    }
+                    blink = 0;
+                    eyeclosed = 0;
+                }
+
+
+                if (side == 1 && blink == 1){  //right middle shot
+                    if(aim == side){
+                        firstpos.setVisibility(INVISIBLE);
+                        enemynumber = 0;
+                    }
+                    blink = 0;
+                    eyeclosed = 0;
+                }
+
+
+
+                if (side == 2 && blink == 1){  //left middle shot
+                    if(aim == side){
+                        secpos.setVisibility(INVISIBLE);
+                        enemynumber = 0;
+                    }
+                    blink = 0;
+                    eyeclosed = 0;
+                }
+
+
+                if(enemynumber == 1 && hp != 0){
+                    hp -= 1;
+                    firstpos.setVisibility(INVISIBLE);
+                    secpos.setVisibility(INVISIBLE);
+                    thirdpos.setVisibility(INVISIBLE);
+                    zeropos.setVisibility(INVISIBLE);
+                    enemynumber = 0;
+                } else{
+
                 }
             }
             if (!(face.getIsLeftEyeOpenProbability() > THRESHOLD || face.getIsRightEyeOpenProbability() > THRESHOLD) && eyeclosed == 0) {
-                blinks = blinks + 1;
+                blinks = blinks + 1;  //separating blinks from closing eyes
                 if (blinks > 8) {
                     blink += 1;
                     blinks = 0;
@@ -225,7 +291,7 @@ public class tacker extends AppCompatActivity {
         cameraSource = new CameraSource.Builder(this, detector)
                 .setRequestedPreviewSize(1024, 768)
                 .setFacing(CameraSource.CAMERA_FACING_FRONT)
-                .setRequestedFps(60.0f)
+                .setRequestedFps(30.0f)
                 .build();
 
         try {
