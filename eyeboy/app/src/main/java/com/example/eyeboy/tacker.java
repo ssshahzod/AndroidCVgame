@@ -4,13 +4,18 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.Image;
+import android.media.MediaParser;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.os.Handler;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
@@ -37,12 +42,13 @@ import static android.view.View.VISIBLE;
 public class tacker extends AppCompatActivity {
 
 
-    public int side, aim, eyeclosed, enemynumber = 0;
+    public int side, aim, eyeclosed, enemynumber = 0, score = 0;
     public String position;
     float coordy;
     public int blinks, blink, hp = 3;
     ImageView thirdpos, zeropos, firstpos, secpos;
     ImageView hp1, hp2, hp3;
+    ImageView area0, area1, area2, area3;
     public String nhp = "hp";
 
     private static final String TAG = "tracker";
@@ -106,7 +112,10 @@ public class tacker extends AppCompatActivity {
         hp3 = (ImageView) findViewById(R.id.hp3);
         hp2 = (ImageView) findViewById(R.id.hp2);
         hp1 = (ImageView) findViewById(R.id.hp1);
-
+        area0 = (ImageView) findViewById(R.id.area0);
+        area1 = (ImageView) findViewById(R.id.area1);
+        area2 = (ImageView) findViewById(R.id.area2);
+        area3 = (ImageView) findViewById(R.id.area3);
 
 
     }
@@ -117,13 +126,50 @@ public class tacker extends AppCompatActivity {
     public void setenemy() {
         new Thread(new Runnable() {
             public void run() {
-                thirdpos.post(new Runnable() {
+                zeropos.post(new Runnable() {
                     public void run() {
+                        if (enemynumber == 1){
+                            if (side == 0){
+                                area0.setVisibility(VISIBLE);
+                                area1.setVisibility(INVISIBLE);
+                                area2.setVisibility(INVISIBLE);
+                                area3.setVisibility(INVISIBLE);
+                            }
+                            else if (side == 1){
+                                area0.setVisibility(INVISIBLE);
+                                area1.setVisibility(VISIBLE);
+                                area2.setVisibility(INVISIBLE);
+                                area3.setVisibility(INVISIBLE);
+                            }
+                            else if (side == 2){
+                                //Log.i(TAG, "in side 2");
+                                area0.setVisibility(INVISIBLE);
+                                area1.setVisibility(INVISIBLE);
+                                area2.setVisibility(VISIBLE);
+                                area3.setVisibility(INVISIBLE);
+                            }
+                            else if (side == 3){
+                                area0.setVisibility(INVISIBLE);
+                                area1.setVisibility(INVISIBLE);
+                                area2.setVisibility(INVISIBLE);
+                                area3.setVisibility(VISIBLE);
+                            }
+                        }
                         if (enemynumber == 0) {
                             Random r = new Random();
                             int i1 = r.nextInt(4);
                             Log.i(TAG, "number" + i1);
                             aim = i1;
+                            if (hp == 0){
+                                hp1.setVisibility(INVISIBLE);
+
+                                try{
+                                    Intent intent = new Intent(tacker.this, Gameover.class);
+                                    startActivity(intent);finish();
+                                } catch (Exception e){
+
+                                }
+                            }
                             if (i1 == 3) { //left enemy
                                 thirdpos.setVisibility(VISIBLE);
                                 enemynumber = 1;
@@ -149,10 +195,7 @@ public class tacker extends AppCompatActivity {
                             if(hp == 1){
                                 hp2.setVisibility(INVISIBLE);
                             }
-                            if (hp == 0){
-                                hp1.setVisibility(INVISIBLE);
-                                setContentView(R.layout.activity_fullscreen);
-                            }
+
                         }
                     }
                 });
@@ -175,20 +218,28 @@ public class tacker extends AppCompatActivity {
             if (enemynumber == 0) {
                 setenemy();
             } else {
-                Log.i(TAG, "have enemy");
             }
             if (face.getIsLeftEyeOpenProbability() > THRESHOLD || face.getIsRightEyeOpenProbability() > THRESHOLD) {
 
                 blinks = 0;
                 coordy = face.getEulerY();
-                if(coordy > 21){
+                Log.i(TAG, "coords" + coordy);
+                if(coordy > 26){
+                    setenemy();
                     side = 3; //left
-                } else if(21 > coordy && coordy > 14){
+                    Log.i(TAG, "left shot");
+                } else if(24 > coordy && coordy > 14){
+                    setenemy();
                     side = 2; //middle left
+                    Log.i(TAG, "middle left shot");
                 } else if(14 > coordy && coordy > 7){
+                    setenemy();
                     side = 1; //middle right
+                    Log.i(TAG, "middle right shot");
                 } else if(7 > coordy){
                     side = 0; //right
+                    Log.i(TAG, "right shot");
+                    setenemy();
                 }
             }
             if ((face.getIsLeftEyeOpenProbability() > THRESHOLD || face.getIsRightEyeOpenProbability() > THRESHOLD) && eyeclosed == 1) {
@@ -196,9 +247,15 @@ public class tacker extends AppCompatActivity {
 
                 if (side == 3 && blink == 1) { //left shot
                     if(aim == side){
+                        MediaPlayer ring = MediaPlayer.create(tacker.this, R.raw.shot);
+                        ring.setVolume(2, 2);
+                        ring.start();
+
                         thirdpos.setVisibility(INVISIBLE);
                         enemynumber = 0;
+
                     }
+                    score += 1;
                     blink = 0;
                     eyeclosed = 0;
                 }
@@ -207,9 +264,13 @@ public class tacker extends AppCompatActivity {
 
                 if (side == 0 && blink == 1){  //right shot
                     if(aim == side){
+                        MediaPlayer ring = MediaPlayer.create(tacker.this, R.raw.shot);
+                        ring.start();
                         zeropos.setVisibility(INVISIBLE);
                         enemynumber = 0;
+
                     }
+                    score += 1;
                     blink = 0;
                     eyeclosed = 0;
                 }
@@ -217,9 +278,12 @@ public class tacker extends AppCompatActivity {
 
                 if (side == 1 && blink == 1){  //right middle shot
                     if(aim == side){
+                        MediaPlayer ring = MediaPlayer.create(tacker.this, R.raw.shot);
+                        ring.start();
                         firstpos.setVisibility(INVISIBLE);
                         enemynumber = 0;
                     }
+                    score += 1;
                     blink = 0;
                     eyeclosed = 0;
                 }
@@ -228,9 +292,12 @@ public class tacker extends AppCompatActivity {
 
                 if (side == 2 && blink == 1){  //left middle shot
                     if(aim == side){
+                        MediaPlayer ring = MediaPlayer.create(tacker.this, R.raw.shot);
+                        ring.start();
                         secpos.setVisibility(INVISIBLE);
                         enemynumber = 0;
                     }
+                    score += 1;
                     blink = 0;
                     eyeclosed = 0;
                 }
@@ -238,6 +305,8 @@ public class tacker extends AppCompatActivity {
 
                 if(enemynumber == 1 && hp != 0){
                     hp -= 1;
+                    MediaPlayer ring = MediaPlayer.create(tacker.this, R.raw.missedsound);
+                    ring.start();
                     firstpos.setVisibility(INVISIBLE);
                     secpos.setVisibility(INVISIBLE);
                     thirdpos.setVisibility(INVISIBLE);

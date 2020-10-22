@@ -21,8 +21,8 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="89dp"
-        android:padding="10dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="10dp">
 
         <Button
             android:id="@+id/buttonStart"
@@ -30,8 +30,8 @@
             android:layout_height="match_parent"
             android:background="@drawable/button_nbl_dsbl"
             android:text="@string/start"
-            android:textSize="26sp"
-            android:textColor="@color/lightone"/>
+            android:textColor="@color/lightone"
+            android:textSize="26sp" />
     </LinearLayout>
 
 </RelativeLayout>

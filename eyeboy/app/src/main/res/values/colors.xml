@@ -6,7 +6,7 @@
         <color name="brown94">#EB873D1A</color>
         <color name="lightbrown">#AF7051</color>
         <color name="lightone">#BA9261</color>
-
+        <color name="black">#000000</color>
 
     <color name="black_overlay">#66000000</color>
 </resources>

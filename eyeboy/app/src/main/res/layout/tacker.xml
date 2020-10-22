@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:foreground="@drawable/mainbackground"
         android:src="@drawable/mainbackground"
         android:visibility="visible"
@@ -49,8 +49,8 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="130dp"
-        android:layout_marginRight="130dp"
+        android:layout_marginEnd="169dp"
+        android:layout_marginRight="169dp"
         android:layout_marginBottom="102dp"
         android:visibility="invisible"
         app:srcCompat="@drawable/mainenemymodelright" />
@@ -62,9 +62,9 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="395dp"
-        android:layout_marginRight="395dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginEnd="358dp"
+        android:layout_marginRight="358dp"
+        android:layout_marginBottom="85dp"
         android:visibility="invisible"
         app:srcCompat="@drawable/mainenemymodelright" />
 
@@ -87,6 +87,17 @@
         android:layout_height="match_parent"
         app:srcCompat="@drawable/mainbackgroundfront"
         tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/area3"
+        android:layout_width="186dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="473dp"
+        android:layout_marginRight="473dp"
+        android:visibility="visible"
+        app:srcCompat="@drawable/area" />
 
     <ImageView
         android:id="@+id/hp1"
@@ -116,5 +127,38 @@
         android:layout_toRightOf="@+id/hp2"
         android:visibility="visible"
         app:srcCompat="@drawable/hp" />
+
+    <ImageView
+        android:id="@+id/area0"
+        android:layout_width="164dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="11dp"
+        android:layout_marginRight="11dp"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/area" />
+
+    <ImageView
+        android:id="@+id/area1"
+        android:layout_width="186dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="163dp"
+        android:layout_marginRight="163dp"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/area" />
+
+    <ImageView
+        android:id="@+id/area2"
+        android:layout_width="183dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="321dp"
+        android:layout_marginRight="321dp"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/area" />
 
 </RelativeLayout>
