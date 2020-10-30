@@ -96,7 +96,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginEnd="473dp"
         android:layout_marginRight="473dp"
-        android:visibility="visible"
+        android:visibility="invisible"
         app:srcCompat="@drawable/area" />
 
     <ImageView
@@ -130,7 +130,7 @@
 
     <ImageView
         android:id="@+id/area0"
-        android:layout_width="164dp"
+        android:layout_width="183dp"
         android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"

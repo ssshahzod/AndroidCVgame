@@ -13,6 +13,7 @@ import androidx.core.app.ActivityCompat;
 
 import android.os.Handler;
 import android.provider.ContactsContract;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,8 +73,14 @@ public class tacker extends AppCompatActivity {
         Window w = getWindow();
         w.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
 
+        int screenHeight = displaymetrics.heightPixels;
+        int screenWidth = displaymetrics.widthPixels;
 
+        int imgHeight = (int) (screenHeight);
+        int imgWidth =  (int) (screenWidth* 0.25);
 
 
         Button exitbtn = (Button)findViewById(R.id.exitbtn);
@@ -113,6 +120,8 @@ public class tacker extends AppCompatActivity {
         hp2 = (ImageView) findViewById(R.id.hp2);
         hp1 = (ImageView) findViewById(R.id.hp1);
         area0 = (ImageView) findViewById(R.id.area0);
+        area0.getLayoutParams().height = imgHeight;
+        area0.getLayoutParams().width = imgWidth;
         area1 = (ImageView) findViewById(R.id.area1);
         area2 = (ImageView) findViewById(R.id.area2);
         area3 = (ImageView) findViewById(R.id.area3);
