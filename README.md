@@ -1,6 +1,8 @@
 # Android Game
 Android game with face tracking and the blinks of eyes. 
-## Some screenshot examples
+
+Game where you dont need to use your hands! 
+Some screenshot examples
 
 ![Screenshot_20220904_203548_com example eyeboy](https://user-images.githubusercontent.com/55853125/188326706-be6220db-1454-4c35-bd8d-a190daf09f6d.jpg)
 
